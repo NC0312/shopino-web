@@ -5,13 +5,13 @@ import React, { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { MdOutlineKeyboardArrowDown } from 'react-icons/md';
 import MenuTabs from './MenuTabs';
-import { FaHeart, FaSearch, FaUser } from 'react-icons/fa';
+import { FaSearch, FaUser } from 'react-icons/fa';
 import WishlistLink from './WishlistLink';
 
 const Header = () => {
     const pathname = usePathname();
     const [isMenuVisible, setIsMenuVisible] = useState(false);
-    const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const [isLoggedIn] = useState(false);
     const [isUserDropdownOpen, setIsUserDropdownOpen] = useState(false);
     const [isMounted, setIsMounted] = useState(false);
     const dropdownRef = useRef<HTMLDivElement>(null);
