@@ -6,11 +6,13 @@ import Header from "@/components/Layout/Header";
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
+  display: 'swap',  // Add display swap for better font loading
 });
 
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
   subsets: ["latin"],
+  display: 'swap',  // Add display swap for better font loading
 });
 
 export const metadata: Metadata = {
@@ -27,12 +29,12 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
-        <Header/>
-        {children}
+    <html lang="en" className={`${geistSans.variable} ${geistMono.variable}`}>
+      <body className="min-h-screen flex flex-col antialiased">
+        <Header />
+        <main className="flex-1">
+          {children}
+        </main>
       </body>
     </html>
   );

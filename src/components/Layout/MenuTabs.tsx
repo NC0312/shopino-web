@@ -44,7 +44,7 @@ const MenuTabs = () => {
                                         <li key={index}>
                                             <Link 
                                                 href={`/products?category=${item.toLowerCase()}`}
-                                                className='text-gray-600 hover:text-blue-600 transition-colors duration-200'
+                                                className='text-md text-gray-600 hover:text-[#102E6A] transition-colors duration-200'
                                             >
                                                 {item}
                                             </Link>
