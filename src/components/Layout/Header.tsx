@@ -3,6 +3,8 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import React from 'react';
 import { motion } from 'framer-motion';
+import { MdOutlineKeyboardArrowDown } from 'react-icons/md';
+import MenuTabs from './MenuTabs';
 
 const Header = () => {
     const pathname = usePathname();
@@ -38,7 +40,12 @@ const Header = () => {
                             )}
                         </Link>
                         <div className='relative group py-4'>
-                            <button></button>
+                            <button className='text-[#36302A] font-semibold text-lg flex items-center gap-2'>
+                                Categories <MdOutlineKeyboardArrowDown className='text-xl'/>
+                            </button>
+                            <div className='absolute w-[800px] bg-white rounded shadow-md hidden group-hover:block'>
+                                <MenuTabs/>
+                            </div>
                         </div>
                     </div>
                 </div>
