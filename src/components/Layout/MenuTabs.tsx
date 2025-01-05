@@ -12,7 +12,7 @@ type TabData = {
 }
 
 const tabData: TabData = {
-    Men: { image: "/men-cover.webp", clothing: ["Hoodies & SweatShirts"], shoes: ["Running"], accessories: ["Bags & Backpacks"] },
+    Men: { image: "/men-cover.webp", clothing: ["Hoodies","Sweatshirts"], shoes: ["Running"], accessories: ["Bags & Backpacks"] },
     Women: { image: "/women-cover.jpg", clothing: ["Tops", "Jeans"], shoes: ["Heels", "Flats"], accessories: ["Handbags"] },
     Kids: { image: "/kids-cover.webp", clothing: ["T-Shirts"], shoes: ["Sneakers"], accessories: ["Hats"] }
 }
@@ -28,6 +28,20 @@ const MenuTabs = () => {
                         <img src={typeof data?.image === 'string' ? data.image : undefined} alt="category" className='rounded-lg w-full object-fill h-[320px]' />
                     </div>
                     <div className='flex justify-between space-x-8 w-full'>
+
+                        <div className='w-1/3'>
+                            <h2 className='font-bold mb-4'>Clothing</h2>
+                            <ul className='space-y-2'>
+                                {
+                                    data?.clothing?.map((item, index) => (
+                                        <li key={index}>
+                                            <Link href={`/products?category=${item?.toLowerCase()}`}>{item}</Link>
+                                        </li>
+                                    ))
+                                }
+                            </ul>
+                        </div>
+
                         <div className='w-1/3'>
                             <h2 className='font-bold mb-4'>Shoes</h2>
                             <ul className='space-y-2'>
@@ -40,6 +54,21 @@ const MenuTabs = () => {
                                 }
                             </ul>
                         </div>
+
+                        <div className='w-1/3'>
+                            <h2 className='font-bold mb-4'>Accessories</h2>
+                            <ul className='space-y-2'>
+                                {
+                                    data?.accessories?.map((item, index) => (
+                                        <li key={index}>
+                                            <Link href={`/products?category=${item?.toLowerCase()}`}>{item}</Link>
+                                        </li>
+                                    ))
+                                }
+                            </ul>
+                        </div>
+
+
                     </div>
 
                 </div>
