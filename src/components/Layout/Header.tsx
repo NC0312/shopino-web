@@ -7,11 +7,12 @@ import { MdOutlineKeyboardArrowDown } from 'react-icons/md';
 import MenuTabs from './MenuTabs';
 import { FaSearch, FaUser } from 'react-icons/fa';
 import WishlistLink from './WishlistLink';
+import Profile from './Profile';
 
 const Header = () => {
     const pathname = usePathname();
     const [isMenuVisible, setIsMenuVisible] = useState(false);
-    const [isLoggedIn] = useState(false);
+    const [isLoggedIn] = useState(true);
     const [isUserDropdownOpen, setIsUserDropdownOpen] = useState(false);
     const [isMounted, setIsMounted] = useState(false);
     const dropdownRef = useRef<HTMLDivElement>(null);
@@ -153,7 +154,7 @@ const Header = () => {
                                 isUserDropdownOpen ? 'opacity-100 visible' : 'opacity-0 invisible'
                             }`}
                         > 
-                            {!isLoggedIn && (
+                            {!isLoggedIn ? (
                                 <div className="flex flex-col space-y-4">
                                     <Link 
                                         href="/register"
@@ -173,7 +174,8 @@ const Header = () => {
                                         Sign In
                                     </Link>
                                 </div>
-                            )}
+                            ):<Profile user={{name:"Niket",phone:"7719417720",avatarUrl:"/profile-image.jpg"}}/>
+                            }
                         </div>
                     </div>
                 </div>
