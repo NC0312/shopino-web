@@ -79,7 +79,7 @@ const Profile: React.FC<ProfileProps> = ({ user }) => {
 
             <div className="mt-4">
                 <ul className="space-y-4">
-                    {menuItems.map((item, index) => (
+                    {menuItems.map((item) => (
                         <li className="block" key={item.label}>
                             <Link 
                                 href={item.href}
