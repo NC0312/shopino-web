@@ -1,13 +1,16 @@
 'use client';
+
 import Link from 'next/link';
 import React, { useState } from 'react'
+import { motion } from 'framer-motion';
+
 type TabName = 'Men' | 'Women' | 'Kids'
 type TabData = {
     [key in TabName]: {
-        clothing: String[];
-        shoes: String[];
-        accessories: String[];
-        image: String;
+        clothing: string[];
+        shoes: string[];
+        accessories: string[];
+        image: string;
     }
 }
 
@@ -19,74 +22,71 @@ const tabData: TabData = {
 
 const MenuTabs = () => {
     const [activeTab, setActiveTab] = useState<TabName>('Men');
+
     const renderContent = () => {
         const data = tabData[activeTab];
         return (
-            <div className='flex justify-between py-3 w-full'>
-                <div className='flex justify-between space-x-8 p-4 w-full'>
+            <div className='flex justify-between py-6 w-full bg-gray-50 rounded-b-lg shadow-inner'>
+                <div className='flex justify-between space-x-8 p-6 w-full max-w-7xl mx-auto'>
                     <div className='w-1/2'>
-                        <img src={typeof data?.image === 'string' ? data.image : undefined} alt="category" className='rounded-lg w-full object-fill h-[320px]' />
+                        <img 
+                            src={typeof data?.image === 'string' ? data.image : undefined} 
+                            alt={`${activeTab} category`} 
+                            className='rounded-lg w-full object-cover h-[400px] shadow-md transition-transform duration-300 hover:scale-105' 
+                        />
                     </div>
-                    <div className='flex justify-between space-x-8 w-full'>
-
-                        <div className='w-1/3'>
-                            <h2 className='font-bold mb-4'>Clothing</h2>
-                            <ul className='space-y-2'>
-                                {
-                                    data?.clothing?.map((item, index) => (
+                    <div className='flex justify-between space-x-12 w-1/2'>
+                        {['clothing', 'shoes', 'accessories'].map((category) => (
+                            <div key={category} className='w-1/3'>
+                                <h2 className='font-bold mb-4 text-lg text-gray-800 border-b pb-2'>{category.charAt(0).toUpperCase() + category.slice(1)}</h2>
+                                <ul className='space-y-2'>
+                                    {data[category as keyof typeof data]?.map((item, index) => (
                                         <li key={index}>
-                                            <Link href={`/products?category=${item?.toLowerCase()}`}>{item}</Link>
+                                            <Link 
+                                                href={`/products?category=${item?.toLowerCase()}`}
+                                                className='text-gray-600 hover:text-blue-600 transition-colors duration-200'
+                                            >
+                                                {item}
+                                            </Link>
                                         </li>
-                                    ))
-                                }
-                            </ul>
-                        </div>
-
-                        <div className='w-1/3'>
-                            <h2 className='font-bold mb-4'>Shoes</h2>
-                            <ul className='space-y-2'>
-                                {
-                                    data?.shoes?.map((item, index) => (
-                                        <li key={index}>
-                                            <Link href={`/products?category=${item?.toLowerCase()}`}>{item}</Link>
-                                        </li>
-                                    ))
-                                }
-                            </ul>
-                        </div>
-
-                        <div className='w-1/3'>
-                            <h2 className='font-bold mb-4'>Accessories</h2>
-                            <ul className='space-y-2'>
-                                {
-                                    data?.accessories?.map((item, index) => (
-                                        <li key={index}>
-                                            <Link href={`/products?category=${item?.toLowerCase()}`}>{item}</Link>
-                                        </li>
-                                    ))
-                                }
-                            </ul>
-                        </div>
-
-
+                                    ))}
+                                </ul>
+                            </div>
+                        ))}
                     </div>
-
                 </div>
             </div>
         )
     }
+
     return (
-        <div className='w-full'>
-            <nav className='flex justify-center space-x-8 py-4 border-b'>
-                {
-                    (['Men', 'Women', 'Kids'] as TabName[]).map((tab) => {
-                        return (<button key={tab} onClick={() => setActiveTab(tab)} className={`text-black ${activeTab === tab ? 'text-[#0D2365] border-b-2 border-[#0D2365]' : ''}`}>{tab}</button>)
-                    })
-                }
+        <div className='w-full bg-white shadow-lg rounded-lg overflow-hidden'>
+            <nav className='flex justify-center space-x-8 py-4 bg-gray-100'>
+                {(['Men', 'Women', 'Kids'] as TabName[]).map((tab) => (
+                    <button 
+                        key={tab} 
+                        onClick={() => setActiveTab(tab)} 
+                        className={`text-lg font-semibold px-4 py-2 rounded-full transition-all duration-200 ${
+                            activeTab === tab 
+                                ? 'text-white bg-[#102E6A] shadow-md' 
+                                : 'text-gray-600 hover:bg-gray-200'
+                        }`}
+                    >
+                        {tab}
+                    </button>
+                ))}
             </nav>
-            {renderContent()}
+            <motion.div
+                key={activeTab}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.3 }}
+            >
+                {renderContent()}
+            </motion.div>
         </div>
     )
 }
 
 export default MenuTabs
+
