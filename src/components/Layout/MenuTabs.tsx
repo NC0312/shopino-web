@@ -5,11 +5,11 @@ import React, { useState } from 'react'
 import { motion } from 'framer-motion';
 
 type TabName = 'Men' | 'Women' | 'Kids'
+type CategoryType = 'clothing' | 'shoes' | 'accessories'
 type TabData = {
     [key in TabName]: {
-        clothing: string[];
-        shoes: string[];
-        accessories: string[];
+        [key in CategoryType]: string[];
+    } & {
         image: string;
     }
 }
@@ -30,20 +30,20 @@ const MenuTabs = () => {
                 <div className='flex justify-between space-x-8 p-6 w-full max-w-7xl mx-auto'>
                     <div className='w-1/2'>
                         <img 
-                            src={typeof data?.image === 'string' ? data.image : undefined} 
+                            src={data.image}
                             alt={`${activeTab} category`} 
                             className='rounded-lg w-full object-cover h-[400px] shadow-md transition-transform duration-300 hover:scale-105' 
                         />
                     </div>
                     <div className='flex justify-between space-x-12 w-1/2'>
-                        {['clothing', 'shoes', 'accessories'].map((category) => (
+                        {(['clothing', 'shoes', 'accessories'] as const).map((category) => (
                             <div key={category} className='w-1/3'>
                                 <h2 className='font-bold mb-4 text-lg text-gray-800 border-b pb-2'>{category.charAt(0).toUpperCase() + category.slice(1)}</h2>
                                 <ul className='space-y-2'>
-                                    {data[category as keyof typeof data]?.map((item, index) => (
+                                    {data[category].map((item, index) => (
                                         <li key={index}>
                                             <Link 
-                                                href={`/products?category=${item?.toLowerCase()}`}
+                                                href={`/products?category=${item.toLowerCase()}`}
                                                 className='text-gray-600 hover:text-blue-600 transition-colors duration-200'
                                             >
                                                 {item}
@@ -62,7 +62,7 @@ const MenuTabs = () => {
     return (
         <div className='w-full bg-white shadow-lg rounded-lg overflow-hidden'>
             <nav className='flex justify-center space-x-8 py-4 bg-gray-100'>
-                {(['Men', 'Women', 'Kids'] as TabName[]).map((tab) => (
+                {(['Men', 'Women', 'Kids'] as const).map((tab) => (
                     <button 
                         key={tab} 
                         onClick={() => setActiveTab(tab)} 
