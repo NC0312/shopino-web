@@ -51,7 +51,7 @@ const Header = () => {
                             <AnimatePresence>
                                 {isMenuVisible && (
                                     <motion.div 
-                                        className='absolute w-[800px] bg-white rounded shadow-md'
+                                        className='absolute top-16 w-[800px] bg-white rounded shadow-md'
                                         initial={{ opacity: 0, y: -10 }}
                                         animate={{ opacity: 1, y: 0 }}
                                         exit={{ opacity: 0, y: -10 }}
