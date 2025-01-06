@@ -55,7 +55,7 @@ const Profile: React.FC<ProfileProps> = ({ user }) => {
 
     return (
         <div className="w-full">
-            <div className="flex space-x-4 items-center">
+            <div className="flex space-x-4 items-center border-b pb-3">
                 <div className="relative w-12 h-12">
                     {user.avatarUrl ? (
                         <Image

@@ -8,6 +8,7 @@ import MenuTabs from './MenuTabs';
 import { FaSearch, FaUser } from 'react-icons/fa';
 import WishlistLink from './WishlistLink';
 import Profile from './Profile';
+import { FaCartShopping } from 'react-icons/fa6';
 
 const Header = () => {
     const pathname = usePathname();
@@ -57,7 +58,7 @@ const Header = () => {
 
     return (
         <div className="shadow-md sticky top-0 z-50 bg-white">
-            <div className="container mx-auto flex px-4 items-center justify-between">
+            <div className="container mx-auto flex px-2 lg:px-4 items-center justify-between">
                 <div className="flex items-center space-x-8">
                     <Link href="/">
                         <div className="ml-0 md:ml-8">
@@ -178,7 +179,13 @@ const Header = () => {
                             }
                         </div>
                     </div>
+
+                    <div className= 'bg-[#36302A] p-2.5 rounded-full cursor-pointer hover:bg-[#102E6A]'>
+                        <FaCartShopping className='text-white text-lg'/>
+                    </div>
                 </div>
+
+
             </div>
         </div>
     );
