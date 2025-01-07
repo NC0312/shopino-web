@@ -5,7 +5,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { MdOutlineKeyboardArrowDown } from 'react-icons/md';
 import MenuTabs from './MenuTabs';
-import { FaSearch, FaUser } from 'react-icons/fa';
+import { FaBars, FaSearch, FaUser } from 'react-icons/fa';
 import WishlistLink from './WishlistLink';
 import Profile from './Profile';
 import { FaCartShopping } from 'react-icons/fa6';
@@ -58,15 +58,18 @@ const Header = () => {
 
     return (
         <div className="shadow-md sticky top-0 z-50 bg-white">
-            <div className="container mx-auto flex px-2 lg:px-4 items-center justify-between">
-                <div className="flex items-center space-x-8">
+            <div className="md:container mx-auto flex px-2 md:px-4 items-center justify-between">
+                <div className="flex items-center space-x-4 md:space-x-8">
+                <div className='md:hidden'>
+                    <FaBars className='ml-3 text-3xl font-normal'/>
+                </div>
                     <Link href="/">
                         <div className="ml-0 md:ml-8">
                             <img src="/shopino-logo2.png" alt="Shopino Logo" />
                         </div>
                     </Link>
 
-                    <div className="flex items-center space-x-8 py-4">
+                    <div className="hidden md:flex items-center space-x-4 md:space-x-8 py-4">
                         <Link
                             href="/"
                             className="relative px-2 py-1 font-semibold text-lg text-[#36302A] md:ml-16"
@@ -126,7 +129,7 @@ const Header = () => {
                         </Link>
                     </div>
                 </div>
-                <div className="flex items-center space-x-6">
+                <div className="hidden md:flex items-center space-x-3 md:space-x-6">
                     <div className="relative">
                         <input
                             type="text"
@@ -183,6 +186,10 @@ const Header = () => {
                     <div className= 'bg-[#36302A] p-2.5 rounded-full cursor-pointer hover:bg-[#102E6A]'>
                         <FaCartShopping className='text-white text-lg'/>
                     </div>
+                </div>
+
+                <div className='md:hidden'>
+                    <FaSearch className='mr-8 p-1 text-2xl'/>
                 </div>
 
 
