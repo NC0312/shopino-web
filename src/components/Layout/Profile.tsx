@@ -72,7 +72,7 @@ const Profile: React.FC<ProfileProps> = ({ user }) => {
                     )}
                 </div>
                 <div>
-                    <h2 className="text-lg font-semibold">{user.name}</h2>
+                    <h2 className="text-lg text-[#575553] font-semibold">{user.name}</h2>
                     <p className="text-sm text-gray-500">{user.phone}</p>
                 </div>
             </div>
