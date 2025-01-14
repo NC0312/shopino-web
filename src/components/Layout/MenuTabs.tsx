@@ -207,7 +207,7 @@ const MenuTabs = () => {
       className="flex-1"
     >
       <motion.h2 
-        className="font-bold mb-4 text-lg text-[#36302A] border-b border-gray-200 pb-2"
+        className="font-bold mb-4 text-lg text-[#1D2564] border-b border-gray-200 pb-2"
         layout
       >
         {categoryData.title}
@@ -271,7 +271,7 @@ const MenuTabs = () => {
               className={`relative text-lg font-semibold px-6 py-2.5 rounded-full transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#102E6A] overflow-hidden ${
                 activeTab === tab 
                   ? 'text-white'
-                  : 'text-[#36302A] hover:bg-gray-200'
+                  : 'text-[#1D2564] hover:bg-gray-200'
               }`}
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
@@ -280,7 +280,7 @@ const MenuTabs = () => {
             >
               {activeTab === tab && (
                 <motion.div
-                  className="absolute inset-0 bg-[#36302A] rounded-full z-0"
+                  className="absolute inset-0 bg-[#1D2564] rounded-full z-0"
                   layoutId="activeTab"
                   transition={{
                     type: "spring",
