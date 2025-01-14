@@ -5,11 +5,32 @@ import { usePathname } from "next/navigation";
 import React, { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { MdOutlineKeyboardArrowDown } from "react-icons/md";
-import { Menu, X, Search, User, ShoppingCart } from "lucide-react";
+import {
+  Menu,
+  X,
+  Search,
+  User,
+  ShoppingCart,
+  Sparkles,
+  ShoppingBag,
+  Tag,
+  Heart,
+  Package,
+  HeadphonesIcon,
+  ArrowRight,
+  LogOut,
+} from "lucide-react";
 import MenuTabs from "./MenuTabs";
 import WishlistLink from "./WishlistLink";
 import Profile from "./Profile";
 import Image from "next/image";
+
+type User = {
+  username: string;
+  phone: string;
+  email?: string;
+  _id?: string;
+};
 
 const Header = () => {
   const pathname = usePathname();
@@ -20,6 +41,71 @@ const Header = () => {
   const [isMounted, setIsMounted] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [user, setUser] = useState<User | null>(null);
+
+  useEffect(() => {
+    const checkAuthStatus = async () => {
+      try {
+        const token = localStorage.getItem("token");
+        console.log(
+          "Checking auth with token:",
+          token ? "Present" : "Not found"
+        );
+
+        if (!token) {
+          setIsLoggedIn(false);
+          return;
+        }
+
+        const response = await fetch("http://localhost:5000/api/check-auth", {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        const data = await response.json();
+
+        if (data.success && data.user) {
+          setIsLoggedIn(true);
+          setUser(data.user);
+        } else {
+          console.log("Auth check failed:", data.message);
+          setIsLoggedIn(false);
+          localStorage.removeItem("token");
+        }
+      } catch (error) {
+        console.error("Auth check failed:", error);
+        setIsLoggedIn(false);
+        localStorage.removeItem("token");
+      }
+    };
+
+    checkAuthStatus();
+  }, []);
+
+  const handleLogout = async () => {
+    try {
+      const token = localStorage.getItem("token");
+      const response = await fetch("http://localhost:5000/api/logout", {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (response.ok) {
+        localStorage.removeItem("token");
+        setIsLoggedIn(false);
+        setUser(null);
+        window.location.href = "/";
+      }
+    } catch (error) {
+      console.error("Logout failed:", error);
+    }
+  };
 
   useEffect(() => {
     setIsMounted(true);
@@ -229,6 +315,7 @@ const Header = () => {
         </div>
 
         {/* Mobile Menu */}
+        {/* Enhanced Mobile Menu */}
         <AnimatePresence>
           {isMobileMenuOpen && (
             <motion.div
@@ -244,47 +331,197 @@ const Header = () => {
                 exit={{ x: "-100%" }}
                 transition={{ type: "tween", duration: 0.3 }}
               >
-                <div className="p-4 border-b">
+                {/* Header */}
+                <div className="p-4 border-b flex items-center justify-between">
+                  <Link href="/" className="flex items-center">
+                    <span className="text-xl font-semibold text-[#1D2564]">
+                      Shopino
+                    </span>
+                  </Link>
                   <button
                     onClick={() => setIsMobileMenuOpen(false)}
-                    className="p-2 text-[#1D2564] ml-auto block"
+                    className="p-2 text-[#1D2564] hover:bg-gray-100 rounded-lg transition-colors"
                   >
                     <X className="h-6 w-6" />
                   </button>
                 </div>
 
-                <div className="flex-1 overflow-y-auto p-4">
-                  <Link
-                    href="/"
-                    className={`block py-3 px-4 rounded-lg text-lg ${
-                      isActive("/")
-                        ? "bg-gray-100 text-[#102E6A] font-semibold"
-                        : "text-[#1D2564]"
-                    }`}
-                  >
-                    Home
-                  </Link>
-                  <Link
-                    href="/categories"
-                    className={`block py-3 px-4 rounded-lg text-lg ${
-                      isActive("/categories")
-                        ? "bg-gray-100 text-[#102E6A] font-semibold"
-                        : "text-[#1D2564]"
-                    }`}
-                  >
-                    Categories
-                  </Link>
-                  <Link
-                    href="/offers"
-                    className={`block py-3 px-4 rounded-lg text-lg ${
-                      isActive("/offers")
-                        ? "bg-gray-100 text-[#102E6A] font-semibold"
-                        : "text-[#1D2564]"
-                    }`}
-                  >
-                    Offers
-                  </Link>
+                {/* User Section */}
+                <div className="border-b p-4 bg-gray-50">
+                  {isLoggedIn ? (
+                    <div className="space-y-3">
+                      <div className="flex items-center space-x-3">
+                        <div className="w-12 h-12 rounded-full bg-[#1D2564]/10 flex items-center justify-center">
+                          <User className="h-6 w-6 text-[#1D2564]" />
+                        </div>
+                        <div>
+                          <h3 className="font-medium text-[#1D2564]">
+                            Welcome back
+                          </h3>
+                          <p className="text-sm text-gray-600">
+                            {user?.username}
+                          </p>
+                        </div>
+                      </div>
+                      <div className="flex space-x-3">
+                        <Link
+                          href="/account/orders"
+                          className="flex-1 text-center py-2 bg-[#1D2564] text-white rounded-lg text-sm hover:bg-[#102E6A] transition-colors"
+                        >
+                          My Orders
+                        </Link>
+                        <Link
+                          href="/account"
+                          className="flex-1 text-center py-2 border border-[#1D2564] text-[#1D2564] rounded-lg text-sm hover:bg-gray-50 transition-colors"
+                        >
+                          Account
+                        </Link>
+                      </div>
+                    </div>
+                  ) : (
+                    <div className="space-y-3">
+                      <p className="text-gray-600">
+                        Sign in for a better experience
+                      </p>
+                      <div className="flex space-x-3">
+                        <Link
+                          href="/login"
+                          className="flex-1 text-center py-2 bg-[#1D2564] text-white rounded-lg text-sm hover:bg-[#102E6A] transition-colors"
+                        >
+                          Sign In
+                        </Link>
+                        <Link
+                          href="/register"
+                          className="flex-1 text-center py-2 border border-[#1D2564] text-[#1D2564] rounded-lg text-sm hover:bg-gray-50 transition-colors"
+                        >
+                          Register
+                        </Link>
+                      </div>
+                    </div>
+                  )}
                 </div>
+
+                {/* Main Navigation */}
+                <div className="flex-1 overflow-y-auto">
+                  {/* Featured Categories */}
+                  <div className="p-4">
+                    <h3 className="text-sm font-medium text-gray-500 mb-3">
+                      SHOP BY CATEGORY
+                    </h3>
+                    <div className="space-y-1">
+                      {[
+                        {
+                          name: "New Arrivals",
+                          icon: <Sparkles className="h-5 w-5" />,
+                          href: "/new-arrivals",
+                        },
+                        {
+                          name: "Men",
+                          icon: <User className="h-5 w-5" />,
+                          href: "/men",
+                        },
+                        {
+                          name: "Women",
+                          icon: <User className="h-5 w-5" />,
+                          href: "/women",
+                        },
+                        {
+                          name: "Kids",
+                          icon: <User className="h-5 w-5" />,
+                          href: "/kids",
+                        },
+                        {
+                          name: "Accessories",
+                          icon: <ShoppingBag className="h-5 w-5" />,
+                          href: "/accessories",
+                        },
+                      ].map((item) => (
+                        <Link
+                          key={item.name}
+                          href={item.href}
+                          className={`flex items-center space-x-3 px-3 py-2 rounded-lg text-gray-700 hover:bg-gray-50 ${
+                            isActive(item.href)
+                              ? "bg-gray-50 text-[#1D2564] font-medium"
+                              : ""
+                          }`}
+                        >
+                          {item.icon}
+                          <span>{item.name}</span>
+                        </Link>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Quick Links */}
+                  <div className="p-4 border-t">
+                    <h3 className="text-sm font-medium text-gray-500 mb-3">
+                      QUICK LINKS
+                    </h3>
+                    <div className="space-y-1">
+                      {[
+                        {
+                          name: "Offers",
+                          icon: <Tag className="h-5 w-5" />,
+                          href: "/offers",
+                        },
+                        {
+                          name: "Wishlist",
+                          icon: <Heart className="h-5 w-5" />,
+                          href: "/wishlist",
+                        },
+                        {
+                          name: "Track Order",
+                          icon: <Package className="h-5 w-5" />,
+                          href: "/track-order",
+                        },
+                        {
+                          name: "Customer Support",
+                          icon: <HeadphonesIcon className="h-5 w-5" />,
+                          href: "/support",
+                        },
+                      ].map((item) => (
+                        <Link
+                          key={item.name}
+                          href={item.href}
+                          className="flex items-center space-x-3 px-3 py-2 rounded-lg text-gray-700 hover:bg-gray-50"
+                        >
+                          {item.icon}
+                          <span>{item.name}</span>
+                        </Link>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Promotional Banner */}
+                  <div className="p-4 border-t">
+                    <div className="bg-[#1D2564] text-white p-4 rounded-lg">
+                      <h4 className="font-medium mb-1">Special Offer</h4>
+                      <p className="text-sm text-white/80 mb-3">
+                        Get 20% off on your first order!
+                      </p>
+                      <Link
+                        href="/offers"
+                        className="inline-flex items-center text-sm text-white hover:underline"
+                      >
+                        Shop Now
+                        <ArrowRight className="h-4 w-4 ml-1" />
+                      </Link>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Footer */}
+                {isLoggedIn && (
+                  <div className="border-t p-4">
+                    <button
+                      onClick={handleLogout}
+                      className="flex items-center space-x-2 text-red-600 hover:text-red-700 transition-colors w-full"
+                    >
+                      <LogOut className="h-5 w-5" />
+                      <span>Sign Out</span>
+                    </button>
+                  </div>
+                )}
               </motion.nav>
             </motion.div>
           )}
