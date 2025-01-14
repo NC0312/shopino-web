@@ -22,19 +22,6 @@ interface FormData {
   phone: string;
 }
 
-interface AuthUser {
-  _id: string;
-  username: string;
-  email: string;
-  phone: string;
-}
-
-interface AuthStatus {
-  isLoggedIn: boolean;
-  isLoading: boolean;
-  user: AuthUser | null;
-}
-
 const AuthPage: React.FC = () => {
   const [isLogin, setIsLogin] = useState(true);
   const [showPassword, setShowPassword] = useState(false);
@@ -47,11 +34,6 @@ const AuthPage: React.FC = () => {
   });
   const [error, setError] = useState<string>("");
   const router = useRouter();
-  const [authStatus, setAuthStatus] = useState<AuthStatus>({
-    isLoggedIn: false,
-    isLoading: true,
-    user: null,
-  });
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -100,18 +82,12 @@ const AuthPage: React.FC = () => {
         localStorage.setItem("token", data.token);
         // Store user data
         const userData = {
-          _id: data.user._id,
-          username: data.user.username || data.user.name,
-          email: data.user.email,
-          phone: data.user.phone,
+          _id: data.userId,
+          username: data.data?.username || formData.name,
+          email: data.data?.email || formData.email,
+          phone: data.data?.phone || formData.phone,
         };
         localStorage.setItem("user", JSON.stringify(userData));
-
-        setAuthStatus({
-          isLoggedIn: true,
-          isLoading: false,
-          user: userData,
-        });
       }
 
       toast.dismiss(loadingToast);

@@ -33,7 +33,6 @@ const Profile = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [user, setUser] = useState<User | null>(null);
-  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const checkAuthStatus = async () => {
@@ -48,13 +47,16 @@ const Profile = () => {
         }
 
         // Verify token with backend
-        const response = await fetch("https://shopinobackend.onrender.com/api/check-auth", {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-        });
+        const response = await fetch(
+          "https://shopinobackend.onrender.com/api/check-auth",
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
 
         const data = await response.json();
 
@@ -82,12 +84,15 @@ const Profile = () => {
   const handleLogout = async () => {
     try {
       const token = localStorage.getItem("token");
-      const response = await fetch("https://shopinobackend.onrender.com/api/logout", {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const response = await fetch(
+        "https://shopinobackend.onrender.com/api/logout",
+        {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
 
       if (response.ok) {
         // Clear all auth data
@@ -165,10 +170,6 @@ const Profile = () => {
 
   return (
     <div className="w-full">
-      {error && (
-        <div className="text-red-500 text-sm mb-4 text-center">{error}</div>
-      )}
-
       {/* User Profile Section */}
       {isLoggedIn && user && (
         <div className="flex space-x-4 items-center border-b border-gray-200 pb-4">
