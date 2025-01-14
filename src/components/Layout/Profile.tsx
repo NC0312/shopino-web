@@ -33,46 +33,48 @@ const Profile = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [user, setUser] = useState<User | null>(null);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const checkAuthStatus = async () => {
+      setError(null);
       try {
         const token = localStorage.getItem("token");
-        const storedUser = localStorage.getItem("user");
+        console.log(
+          "Checking auth with token:",
+          token ? "Present" : "Not found"
+        );
 
-        if (!token || !storedUser) {
+        if (!token) {
           setIsLoggedIn(false);
           setIsLoading(false);
           return;
         }
 
-        // Verify token with backend
-        const response = await fetch(
-          "https://shopinobackend.onrender.com/api/check-auth",
-          {
-            method: "GET",
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
+        const response = await fetch("http://localhost:5000/api/check-auth", {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        });
 
         const data = await response.json();
 
-        if (data.success) {
-          // If token is valid, use the stored user data
+        if (data.success && data.user) {
           setIsLoggedIn(true);
-          setUser(JSON.parse(storedUser));
+          setUser(data.user);
         } else {
-          // If token is invalid, clear storage
-          localStorage.removeItem("token");
-          localStorage.removeItem("user");
+          console.log("Auth check failed:", data.message);
           setIsLoggedIn(false);
+          localStorage.removeItem("token");
+          setError(data.message || "Authentication failed");
         }
       } catch (error) {
         console.error("Auth check failed:", error);
         setIsLoggedIn(false);
+        localStorage.removeItem("token");
+        setError("Failed to check authentication status");
       } finally {
         setIsLoading(false);
       }
@@ -84,26 +86,22 @@ const Profile = () => {
   const handleLogout = async () => {
     try {
       const token = localStorage.getItem("token");
-      const response = await fetch(
-        "https://shopinobackend.onrender.com/api/logout",
-        {
-          method: "POST",
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      const response = await fetch("http://localhost:5000/api/logout", {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
 
       if (response.ok) {
-        // Clear all auth data
         localStorage.removeItem("token");
-        localStorage.removeItem("user");
         setIsLoggedIn(false);
         setUser(null);
         window.location.href = "/";
       }
     } catch (error) {
       console.error("Logout failed:", error);
+      setError("Failed to logout");
     }
   };
 
@@ -152,7 +150,7 @@ const Profile = () => {
     {
       icon: <UserPlus className="h-4 w-4" />,
       label: "Create Account",
-      href: "/login",
+      href: "/register",
     },
   ];
 
@@ -170,6 +168,10 @@ const Profile = () => {
 
   return (
     <div className="w-full">
+      {error && (
+        <div className="text-red-500 text-sm mb-4 text-center">{error}</div>
+      )}
+
       {/* User Profile Section */}
       {isLoggedIn && user && (
         <div className="flex space-x-4 items-center border-b border-gray-200 pb-4">
