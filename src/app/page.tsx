@@ -234,13 +234,13 @@ const HomePage = () => {
             </motion.h2>
             <motion.div
               variants={fadeIn}
-              className="flex justify-center space-x-4 mb-12"
+              className="flex justify-center mb-12"
             >
               {["all", "clothing", "accessories", "shoes"].map((category) => (
                 <button
                   key={category}
                   onClick={() => setActiveCategory(category)}
-                  className={`px-6 py-2 text-sm transition-colors duration-300 ${
+                  className={`px-5 py-2 text-sm transition-colors duration-300 ${
                     activeCategory === category
                       ? "bg-[#1D2564] text-white"
                       : "bg-transparent text-gray-600 hover:bg-gray-100"

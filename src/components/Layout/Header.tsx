@@ -163,13 +163,13 @@ const Header = () => {
   if (!isMounted) return null;
 
   return (
-    <header className="shadow-md sticky top-0 z-50 bg-white">
+    <header className="shadow-md sticky top-0 z-50 bg-white overflow-hidden">
       <div className="md:container mx-auto">
-        <div className="flex items-center justify-between px-4 py-2 md:py-4">
+        <div className="flex items-center justify-between px-4 py-2 lg:py-4">
           {/* Mobile Menu Button */}
           <button
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            className="md:hidden p-2 text-[#1D2564] focus:outline-none"
+            className="lg:hidden p-2 text-[#1D2564] focus:outline-none"
             aria-label="Toggle menu"
           >
             {isMobileMenuOpen ? (
@@ -193,7 +193,7 @@ const Header = () => {
           </Link>
 
           {/* Desktop Navigation */}
-          <nav className="hidden md:flex items-center space-x-8">
+          <nav className="hidden lg:flex items-center space-x-8">
             <Link
               href="/"
               className="relative px-2 py-1 font-semibold text-lg text-[#1D2564]"
@@ -314,7 +314,6 @@ const Header = () => {
           </div>
         </div>
 
-        {/* Mobile Menu */}
         {/* Enhanced Mobile Menu */}
         <AnimatePresence>
           {isMobileMenuOpen && (
