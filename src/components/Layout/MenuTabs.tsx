@@ -261,7 +261,7 @@ const MenuTabs = () => {
   );
 
   return (
-    <div className="w-full bg-white shadow-lg rounded-lg overflow-hidden">
+    <div className="w-full bg-white shadow-lg rounded-lg overflow-hidden z-[100]">
       <LayoutGroup>
         <nav className="flex justify-center space-x-8 py-4 bg-gray-50 border-b border-gray-200">
           {Object.keys(tabData).map((tab) => (

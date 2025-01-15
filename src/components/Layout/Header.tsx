@@ -43,6 +43,7 @@ const Header = () => {
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [user, setUser] = useState<User | null>(null);
+  const isDevelopment = process.env.NEXT_PUBLIC_ENV === "development";
 
   useEffect(() => {
     const checkAuthStatus = async () => {
@@ -163,7 +164,11 @@ const Header = () => {
   if (!isMounted) return null;
 
   return (
-    <header className="shadow-md sticky top-0 z-50 bg-white overflow-hidden">
+    <header
+      className={`shadow-md sticky top-0 z-50 ${
+        isDevelopment ? "bg-slate-600" : "bg-white"
+      }`}
+    >
       <div className="md:container mx-auto">
         <div className="flex items-center justify-between px-4 py-2 lg:py-4">
           {/* Mobile Menu Button */}
