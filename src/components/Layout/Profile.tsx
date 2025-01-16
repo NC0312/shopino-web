@@ -51,7 +51,7 @@ const Profile = () => {
           return;
         }
 
-        const response = await fetch("https://shopinobackend.onrender.com/check-auth", {
+        const response = await fetch("https://shopinobackend.onrender.com/api/check-auth", {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
