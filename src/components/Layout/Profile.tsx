@@ -51,7 +51,7 @@ const Profile = () => {
           return;
         }
 
-        const response = await fetch("http://localhost:5000/api/check-auth", {
+        const response = await fetch("https://shopinobackend.onrender.com/check-auth", {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
@@ -86,7 +86,7 @@ const Profile = () => {
   const handleLogout = async () => {
     try {
       const token = localStorage.getItem("token");
-      const response = await fetch("http://localhost:5000/api/logout", {
+      const response = await fetch("https://shopinobackend.onrender.com/api/logout", {
         method: "POST",
         headers: {
           Authorization: `Bearer ${token}`,
