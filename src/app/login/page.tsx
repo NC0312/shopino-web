@@ -68,6 +68,7 @@ const AuthPage: React.FC = () => {
                   email: formData.email.trim(),
                   password: formData.password,
                   phone: formData.phone.replace(/\D/g, ""),
+                  gender: formData.gender.toLowerCase().trim()
                 }
           ),
         }
