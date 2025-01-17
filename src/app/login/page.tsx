@@ -20,6 +20,7 @@ interface FormData {
   password: string;
   name: string;
   phone: string;
+  gender: string;
 }
 
 const AuthPage: React.FC = () => {
@@ -31,6 +32,7 @@ const AuthPage: React.FC = () => {
     password: "",
     name: "",
     phone: "",
+    gender: "",
   });
   const [error, setError] = useState<string>("");
   const router = useRouter();
@@ -119,7 +121,7 @@ const AuthPage: React.FC = () => {
   };
 
   const handleInputChange = useCallback(
-    (e: React.ChangeEvent<HTMLInputElement>) => {
+    (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
       const { name, value } = e.target;
       if (name === "phone") {
         const digits = value.replace(/\D/g, "").slice(0, 10);
@@ -293,7 +295,25 @@ const AuthPage: React.FC = () => {
                               />
                             </div>
                           </div>
-
+                          <div>
+                            <label className="block text-sm font-medium text-[#1D2564] mb-2">
+                              Gender
+                            </label>
+                            <select
+                              id="gender"
+                              name="gender"
+                              value={formData.gender}
+                              onChange={handleInputChange}
+                              className="w-full p-2 border rounded border-surface-dark focus:border-accent focus:ring-accent bg-surface-light font-lato text-base"
+                            >
+                              <option value="">Select the Gender</option>
+                              {["Men", "Women"].map((gender, index) => (
+                                <option key={index} value={gender}>
+                                  {gender}
+                                </option>
+                              ))}
+                            </select>
+                          </div>
                           <div>
                             <label className="block text-sm font-medium text-[#1D2564] mb-2">
                               Phone Number
