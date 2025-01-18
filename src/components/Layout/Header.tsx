@@ -400,12 +400,12 @@ const Header = () => {
                         >
                           Sign In
                         </Link>
-                        <Link
+                        {/* <Link
                           href="/register"
                           className="flex-1 text-center py-2 border border-[#1D2564] text-[#1D2564] rounded-lg text-sm hover:bg-gray-50 transition-colors"
                         >
                           Register
-                        </Link>
+                        </Link> */}
                       </div>
                     </div>
                   )}

@@ -147,11 +147,11 @@ const Profile = () => {
       label: "Sign In",
       href: "/login",
     },
-    {
-      icon: <UserPlus className="h-4 w-4" />,
-      label: "Create Account",
-      href: "/register",
-    },
+    // {
+    //   icon: <UserPlus className="h-4 w-4" />,
+    //   label: "Create Account",
+    //   href: "/register",
+    // },
   ];
 
   const menuItems = isLoggedIn

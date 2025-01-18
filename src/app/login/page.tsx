@@ -14,6 +14,7 @@ import {
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Toaster, toast } from "sonner";
 import { useRouter } from "next/navigation";
+import { FaVenusMars } from "react-icons/fa";
 
 interface FormData {
   email: string;
@@ -60,16 +61,16 @@ const AuthPage: React.FC = () => {
           body: JSON.stringify(
             isLogin
               ? {
-                  email: formData.email.trim(),
-                  password: formData.password,
-                }
+                email: formData.email.trim(),
+                password: formData.password,
+              }
               : {
-                  username: formData.name?.trim(),
-                  email: formData.email.trim(),
-                  password: formData.password,
-                  phone: formData.phone.replace(/\D/g, ""),
-                  gender: formData.gender.toLowerCase().trim()
-                }
+                username: formData.name?.trim(),
+                email: formData.email.trim(),
+                password: formData.password,
+                phone: formData.phone.replace(/\D/g, ""),
+                gender: formData.gender.toLowerCase().trim()
+              }
           ),
         }
       );
@@ -300,21 +301,29 @@ const AuthPage: React.FC = () => {
                             <label className="block text-sm font-medium text-[#1D2564] mb-2">
                               Gender
                             </label>
-                            <select
-                              id="gender"
-                              name="gender"
-                              value={formData.gender}
-                              onChange={handleInputChange}
-                              className="w-full p-2 border rounded border-surface-dark focus:border-accent focus:ring-accent bg-surface-light font-lato text-base"
-                            >
-                              <option value="">Select the Gender</option>
-                              {["Men", "Women"].map((gender, index) => (
-                                <option key={index} value={gender}>
-                                  {gender}
-                                </option>
-                              ))}
-                            </select>
+                            <div className="relative">
+                              <select
+                                id="gender"
+                                name="gender"
+                                value={formData.gender}
+                                onChange={handleInputChange}
+                                className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl 
+                 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all appearance-none"
+                              >
+                                <option value="">Select the Gender</option>
+                                {["Men", "Women","Prefer Not To Say","Others"].map((gender, index) => (
+                                  <option key={index} value={gender}>
+                                    {gender}
+                                  </option>
+                                ))}
+                              </select>
+                              <FaVenusMars
+                                className="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-400"
+                                size={18}
+                              />
+                            </div>
                           </div>
+
                           <div>
                             <label className="block text-sm font-medium text-[#1D2564] mb-2">
                               Phone Number
@@ -398,11 +407,10 @@ const AuthPage: React.FC = () => {
                     disabled={isLoading}
                     className={`w-full bg-[#1D2564] text-white py-3 rounded-xl font-medium
                              hover:bg-[#242f7e] transform transition-all
-                             ${
-                               isLoading
-                                 ? "opacity-70 cursor-not-allowed"
-                                 : "hover:shadow-lg"
-                             }`}
+                             ${isLoading
+                        ? "opacity-70 cursor-not-allowed"
+                        : "hover:shadow-lg"
+                      }`}
                     whileHover={{ scale: isLoading ? 1 : 1.01 }}
                     whileTap={{ scale: isLoading ? 1 : 0.98 }}
                   >
