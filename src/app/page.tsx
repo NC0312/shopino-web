@@ -232,10 +232,7 @@ const HomePage = () => {
             >
               Trending Now
             </motion.h2>
-            <motion.div
-              variants={fadeIn}
-              className="flex justify-center mb-12"
-            >
+            <motion.div variants={fadeIn} className="flex justify-center mb-12">
               {["all", "clothing", "accessories", "shoes"].map((category) => (
                 <button
                   key={category}
@@ -345,43 +342,6 @@ const HomePage = () => {
               </motion.div>
             ))}
           </div>
-        </div>
-      </section>
-
-      {/* Newsletter Section */}
-      <section className="py-20 bg-gray-50">
-        <div className="container mx-auto px-4">
-          <motion.div
-            initial="initial"
-            whileInView="animate"
-            viewport={{ once: true }}
-            variants={stagger}
-            className="max-w-2xl mx-auto text-center"
-          >
-            <motion.h2
-              variants={fadeIn}
-              className="text-4xl font-light text-gray-900 mb-4"
-            >
-              Join Our Community
-            </motion.h2>
-            <motion.p variants={fadeIn} className="text-gray-600 mb-8">
-              Subscribe to receive exclusive offers, early access to new
-              collections, and style inspiration.
-            </motion.p>
-            <motion.form
-              variants={fadeIn}
-              className="flex flex-col md:flex-row gap-4 justify-center"
-            >
-              <input
-                type="email"
-                placeholder="Enter your email"
-                className="px-6 py-4 flex-1 border border-gray-200 focus:border-[#1D2564] outline-none transition-colors duration-300"
-              />
-              <button className="px-8 py-4 bg-[#1D2564] text-white hover:bg-[#2a357d] transition-colors duration-300">
-                Subscribe
-              </button>
-            </motion.form>
-          </motion.div>
         </div>
       </section>
     </div>
