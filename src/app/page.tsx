@@ -93,7 +93,7 @@ const HomePage = () => {
               Limited Time Offer
             </span>
             <span className="hidden md:inline">|</span>
-            <span>Free Shipping on Orders Over $200</span>
+            <span>Free Shipping on Orders Over Rs.899</span>
           </motion.div>
         </div>
       </div>
