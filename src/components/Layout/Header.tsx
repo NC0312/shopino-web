@@ -32,6 +32,10 @@ type User = {
   _id?: string;
 };
 
+interface NavbarProps {
+  isActive: (path: string) => boolean;
+}
+
 const Header = () => {
   const pathname = usePathname();
   const [isMenuVisible, setIsMenuVisible] = useState(false);
@@ -44,6 +48,19 @@ const Header = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [user, setUser] = useState<User | null>(null);
   const isDevelopment = process.env.NEXT_PUBLIC_ENV === "development";
+
+  const menuRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
+        setIsMenuVisible(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
 
   useEffect(() => {
     const checkAuthStatus = async () => {
@@ -169,11 +186,12 @@ const Header = () => {
 
   if (!isMounted) return null;
 
+ 
+
   return (
     <header
-      className={`shadow-md sticky top-0 z-50 ${
-        isDevelopment ? "bg-slate-600" : "bg-white"
-      }`}
+      className={`shadow-md sticky top-0 z-50 ${isDevelopment ? "bg-slate-600" : "bg-white"
+        }`}
     >
       <div className="md:container mx-auto">
         <div className="flex items-center justify-between px-4 py-2 lg:py-4">
@@ -218,13 +236,11 @@ const Header = () => {
                 />
               )}
             </Link>
-
-            <div
-              className="relative py-4"
-              onMouseEnter={() => setIsMenuVisible(true)}
-              onMouseLeave={() => setIsMenuVisible(false)}
-            >
-              <button className="text-[#1D2564] font-semibold text-lg flex items-center gap-2">
+            <div ref={menuRef} className="relative py-4">
+              <button
+                onClick={() => setIsMenuVisible(!isMenuVisible)}
+                className="text-[#1D2564] font-semibold text-lg flex items-center gap-2"
+              >
                 Categories <MdOutlineKeyboardArrowDown className="text-xl" />
               </button>
               <AnimatePresence>
@@ -241,7 +257,6 @@ const Header = () => {
                 )}
               </AnimatePresence>
             </div>
-
             <Link
               href="/offers"
               className="relative px-2 py-1 font-semibold text-lg text-[#1D2564]"
@@ -449,11 +464,10 @@ const Header = () => {
                         <Link
                           key={item.name}
                           href={item.href}
-                          className={`flex items-center space-x-3 px-3 py-2 rounded-lg text-gray-700 hover:bg-gray-50 ${
-                            isActive(item.href)
-                              ? "bg-gray-50 text-[#1D2564] font-medium"
-                              : ""
-                          }`}
+                          className={`flex items-center space-x-3 px-3 py-2 rounded-lg text-gray-700 hover:bg-gray-50 ${isActive(item.href)
+                            ? "bg-gray-50 text-[#1D2564] font-medium"
+                            : ""
+                            }`}
                         >
                           {item.icon}
                           <span>{item.name}</span>
