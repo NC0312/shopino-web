@@ -32,9 +32,9 @@ type User = {
   _id?: string;
 };
 
-interface NavbarProps {
-  isActive: (path: string) => boolean;
-}
+// interface NavbarProps {
+//   isActive: (path: string) => boolean;
+// }
 
 const Header = () => {
   const pathname = usePathname();
