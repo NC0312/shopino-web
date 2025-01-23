@@ -1,7 +1,7 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
-import { motion } from "framer-motion";
+import { useState, useEffect, useRef, FormEvent } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
 import Image from "next/image";
 import {
@@ -13,6 +13,8 @@ import {
   Clock,
   CheckCircle,
   Sparkles,
+  Check,
+  Send,
 } from "lucide-react";
 
 const fadeIn = {
@@ -29,9 +31,50 @@ const stagger = {
   },
 };
 
+const containerVariants = {
+  hidden: { opacity: 0, y: 20 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 0.8,
+      staggerChildren: 0.2,
+    },
+  },
+};
+
+const itemVariants = {
+  hidden: { opacity: 0, y: 20 },
+  visible: { opacity: 1, y: 0 },
+};
+
+const successVariants = {
+  hidden: { opacity: 0, scale: 0.8 },
+  visible: {
+    opacity: 1,
+    scale: 1,
+    transition: {
+      duration: 0.4,
+      ease: "easeOut",
+    },
+  },
+  exit: {
+    opacity: 0,
+    scale: 0.8,
+    transition: {
+      duration: 0.3,
+      ease: "easeIn",
+    },
+  },
+};
+
 const HomePage = () => {
   const [activeCategory, setActiveCategory] = useState("all");
   const lastScrollY = useRef(0);
+  const [email, setEmail] = useState("");
+  const [isSubmitted, setIsSubmitted] = useState(false);
+  const [isValid, setIsValid] = useState(true);
+  const [isExiting, setIsExiting] = useState(false);
 
   // Trending products data
   const trendingProducts = [
@@ -77,6 +120,32 @@ const HomePage = () => {
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  const validateEmail = (email: string) => {
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+  };
+
+  const handleSubmit = async (e: FormEvent) => {
+    e.preventDefault();
+    if (validateEmail(email)) {
+      setIsSubmitted(true);
+      setIsValid(true);
+
+      // Start exit animation after 2.5 seconds
+      setTimeout(() => {
+        setIsExiting(true);
+      }, 2500);
+
+      // Reset states after exit animation
+      setTimeout(() => {
+        setIsSubmitted(false);
+        setIsExiting(false);
+        setEmail("");
+      }, 3000);
+    } else {
+      setIsValid(false);
+    }
+  };
 
   return (
     <div className="min-h-screen bg-white overflow-hidden">
@@ -342,6 +411,107 @@ const HomePage = () => {
               </motion.div>
             ))}
           </div>
+        </div>
+      </section>
+
+      {/* Newsletter Section */}
+      <section className="relative py-24 overflow-hidden bg-gradient-to-b from-gray-50 to-white">
+        <motion.div
+          className="absolute inset-0 opacity-20"
+          initial={{ backgroundPosition: "0% 0%" }}
+          animate={{ backgroundPosition: "100% 100%" }}
+          transition={{ duration: 20, repeat: Infinity, repeatType: "reverse" }}
+          style={{
+            backgroundImage:
+              'url("data:image/svg+xml,%3Csvg width="20" height="20" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"%3E%3Cg fill="%239C92AC" fill-opacity="0.2"%3E%3Cpolygon points="0 0 20 0 10 10"/%3E%3C/g%3E%3C/svg%3E")',
+          }}
+        />
+
+        <div className="container mx-auto px-4">
+          <motion.div
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            variants={containerVariants}
+            className="max-w-2xl mx-auto text-center relative"
+          >
+            <motion.div variants={itemVariants} className="mb-8">
+              <h2 className="text-4xl font-light text-gray-900 mb-4 tracking-tight">
+                Join Our <span className="font-medium">Community</span>
+              </h2>
+              <p className="text-gray-600 text-lg">
+                Get exclusive offers, early access, and curated style
+                inspiration
+              </p>
+            </motion.div>
+
+            <AnimatePresence mode="wait">
+              {!isSubmitted ? (
+                <motion.form
+                  key="form"
+                  variants={itemVariants}
+                  initial="hidden"
+                  animate="visible"
+                  exit="hidden"
+                  onSubmit={handleSubmit}
+                  className="relative"
+                >
+                  <div className="flex flex-col md:flex-row gap-4 justify-center">
+                    <div className="flex-1">
+                      <input
+                        type="email"
+                        value={email}
+                        onChange={(e) => {
+                          setEmail(e.target.value);
+                          setIsValid(true);
+                        }}
+                        placeholder="Enter your email"
+                        className={`w-full px-6 py-4 bg-white shadow-sm border ${
+                          isValid
+                            ? "border-gray-200 focus:border-primary"
+                            : "border-red-400"
+                        } outline-none transition-all duration-300 rounded-lg`}
+                      />
+                      {!isValid && (
+                        <motion.p
+                          initial={{ opacity: 0, y: -10 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          className="text-red-500 text-sm mt-2 text-left"
+                        >
+                          Please enter a valid email address
+                        </motion.p>
+                      )}
+                    </div>
+                    <button
+                      type="submit"
+                      className="px-8 py-4 bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors duration-300 flex items-center justify-center group"
+                    >
+                      Subscribe
+                      <Send className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
+                    </button>
+                  </div>
+                </motion.form>
+              ) : (
+                <motion.div
+                  key="success"
+                  variants={successVariants}
+                  initial="hidden"
+                  animate={isExiting ? "exit" : "visible"}
+                  exit="exit"
+                  className="bg-green-50 text-green-800 p-6 rounded-lg shadow-sm"
+                >
+                  <Check className="w-12 h-12 mx-auto mb-4 text-green-500" />
+                  <h3 className="text-xl font-medium mb-2">
+                    Thank you for subscribing!
+                  </h3>
+                  <p className="text-green-700">
+                    Welcome to our community. We&apos;ll keep you updated with the
+                    latest news and offers.
+                  </p>
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </motion.div>
         </div>
       </section>
     </div>
