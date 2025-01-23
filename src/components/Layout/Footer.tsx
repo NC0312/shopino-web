@@ -221,7 +221,7 @@ const Footer = () => {
             transition={{ delay: 0.3 }}
           >
             <h4 className="text-lg font-medium">Follow Us</h4>
-            <div className="flex justify-center space-x-6">
+            <div className="flex justify-center flex-wrap space-x-6">
               {[
                 FaFacebookF,
                 FaInstagram,
