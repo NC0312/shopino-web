@@ -275,7 +275,7 @@ const HomePage = () => {
                     <div className="text-center text-white">
                       <h3 className="text-2xl font-light mb-4">{category.name}</h3>
                       <Link
-                        href={`/category/${category.slug}`}
+                        href={`/category/${category.slug.toLowerCase()}`}
                         className="inline-block border border-white px-6 py-2 hover:bg-white hover:text-black transition-colors duration-300"
                       >
                         Discover
