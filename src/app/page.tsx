@@ -248,9 +248,13 @@ const HomePage = () => {
           </motion.div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {["Men", "Women", "Kids"].map((category, index) => (
+            {[
+              { name: "Men's Hub", slug: "Men" },
+              { name: "Women's Wardrobe", slug: "Women" },
+              { name: "Kids' Corner", slug: "Kids" }
+            ].map((category, index) => (
               <motion.div
-                key={category}
+                key={category.name}
                 variants={fadeIn}
                 initial="initial"
                 whileInView="animate"
@@ -261,17 +265,17 @@ const HomePage = () => {
               >
                 <div className="relative h-[500px] overflow-hidden">
                   <Image
-                    src={`/${category.toLowerCase()}-cover.jpg`}
-                    alt={category}
+                    src={`/${category.slug.toLowerCase()}-cover.jpg`}
+                    alt={category.name}
                     fill
                     className="object-cover transition-transform duration-700 group-hover:scale-105"
                   />
                   <div className="absolute inset-0 bg-black/20 group-hover:bg-black/40 transition-colors duration-300" />
                   <div className="absolute inset-0 flex items-center justify-center">
                     <div className="text-center text-white">
-                      <h3 className="text-2xl font-light mb-4">{category}</h3>
+                      <h3 className="text-2xl font-light mb-4">{category.name}</h3>
                       <Link
-                        href={`/category/${category.toLowerCase()}`}
+                        href={`/category/${category.slug}`}
                         className="inline-block border border-white px-6 py-2 hover:bg-white hover:text-black transition-colors duration-300"
                       >
                         Discover
@@ -306,11 +310,10 @@ const HomePage = () => {
                 <button
                   key={category}
                   onClick={() => setActiveCategory(category)}
-                  className={`px-5 py-2 text-sm transition-colors duration-300 ${
-                    activeCategory === category
-                      ? "bg-[#1D2564] text-white"
-                      : "bg-transparent text-gray-600 hover:bg-gray-100"
-                  }`}
+                  className={`px-5 py-2 text-sm transition-colors duration-300 ${activeCategory === category
+                    ? "bg-[#1D2564] text-white"
+                    : "bg-transparent text-gray-600 hover:bg-gray-100"
+                    }`}
                 >
                   {category.charAt(0).toUpperCase() + category.slice(1)}
                 </button>
@@ -466,11 +469,10 @@ const HomePage = () => {
                           setIsValid(true);
                         }}
                         placeholder="Enter your email"
-                        className={`w-full px-6 py-4 bg-white shadow-sm border ${
-                          isValid
-                            ? "border-gray-200 focus:border-primary"
-                            : "border-red-400"
-                        } outline-none transition-all duration-300 rounded-lg`}
+                        className={`w-full px-6 py-4 bg-white shadow-sm border ${isValid
+                          ? "border-gray-200 focus:border-primary"
+                          : "border-red-400"
+                          } outline-none transition-all duration-300 rounded-lg`}
                       />
                       {!isValid && (
                         <motion.p
